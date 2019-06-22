@@ -2,7 +2,7 @@
 PC := fpc
 PFLAGS := -TLINUX
 PSRC := main.pas
-OBJS := main.o utils.o
+OBJS := main.o utils.o ops.o parser.o
 BIN := compiler
 
 .PHONY: all clean test
