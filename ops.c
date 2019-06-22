@@ -14,14 +14,14 @@ op_fn ops_fn[2] = {
 void add(void)
 {
     term();
-    printf("ADD D1, D0\n");
+    printf("ADD (SP)+, D0\n"); /* (SP)+ pops from stack */
     return;
 }
 
 void sub(void)
 {
     term();
-    printf("SUB D1, D0\n");
+    printf("SUB (SP)+, D0\n");
     printf("NEG D0\n");
     return;
 }

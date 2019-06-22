@@ -78,25 +78,56 @@ end;
 
 { Parser }
 { ------------------------------- }
-{ Definition of an expression: }
-{ <expression> ::= <term> [<addop> <term>]* }
-procedure Term;
+{ Grammar: }
+{ <expression> ::= <term> [ <addop> <term> ]* }
+{ <term> ::= <factor> [ <mulop> <factor> ]* }
+{ <factor> ::= <digit> }
+procedure Factor;
 begin
     EmitLn('MOVE #' + GetNum + ', D0');
+end;
+
+procedure Multiply;
+begin
+    Match('*');
+    Factor;
+    EmitLn('MULS (SP)+, D0');
+end;
+
+procedure Divide;
+begin
+    Match('/');
+    Factor;
+    { Make sure to perform division in correct order }
+    EmitLn('MOVE (SP)+, D1');
+    EmitLn('DIVS D1, D0');
+end;
+
+procedure Term;
+begin
+    Factor;
+    while Look in ['*', '/'] do begin
+        EmitLn('MOVE D0, -(SP)');
+        case Look of
+            '*': Multiply;
+            '/': Divide;
+            else Expected('Mulop');
+        end;
+    end;
 end;
 
 procedure Add;
 begin
     Match('+');
     Term;
-    EmitLn('ADD D1, D0');
+    EmitLn('ADD (SP)+, D0');
 end;
 
 procedure Subtract;
 begin
     Match('-');
     Term;
-    EmitLn('SUB D1, D0');
+    EmitLn('SUB (SP)+, D0');
     EmitLn('NEG D0');           { Otherwise, the order of operations is wrong }
 end;
 
@@ -104,7 +135,7 @@ procedure Expression;
 begin
     Term;
     while Look in ['+', '-'] do begin
-        EmitLn('MOVE D0, D1');
+        EmitLn('MOVE D0, -(SP)');
         case Look of
             '+': Add;
             '-': Subtract;

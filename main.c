@@ -1,12 +1,16 @@
 /* main.c: parse an expression from stdin. */
 #include "parser.h"
+#include "utils.h"
 
-char *progname;
+const char *progname;
 
 int main(int argc, char **argv)
 {
-    /* parse an expression from stdin */
     progname = argv[0];
+
+    if (argc != 1) /* FIXME: check actual arguments */
+        usage(progname);
+
     expression();
 
     return 0;
