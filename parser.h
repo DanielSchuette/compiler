@@ -1,7 +1,16 @@
 #ifndef _PARSER_H_
 #define _PARSER_H_
 
-void expression(void);
-void term(void);
+#include "lexer.h"
+
+/*
+ * Grammar:
+ * <expression> ::= <term> [ <addop> <term> ]*
+ * <term> ::= <factor> [ <mulop> <factor> ]*
+ * <factor> ::= <digit>
+ */
+void expression(tokens **);
+void term(tokens **);
+void factor(tokens **);
 
 #endif /* _PARSER_H_ */

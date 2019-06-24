@@ -4,8 +4,7 @@
 #include "utils.h"
 
 const static char* help_msg =
-"Counts to 25 minutes in 1 second intervals, asking you to do work. Then,\n"
-"a break of 5 minutes is recommended. These intervals might be changed.\n"
+"Compile simple math expressions to 68000 assembly language."
 "Author: Daniel Schuette <d.schuette@online.de>\n"
 "Date: 2019/06/23\n"
 "Sources: https://github.com/DanielSchuette/compiler\n"
@@ -16,24 +15,29 @@ const static char* help_msg =
 "\n"
 "FLAGS:\n"
 "\t-h, --help\t\tDisplay this help message\n"
+"\t-d, --debug\t\tEnable debug mode\n"
 "\n"
 "OPTIONS:\n"
-"\t-f, --file <FILE>\tSupply expression via <FILE> instead of `stdin'\n"
-"\t\t\t(not yet supported).\n";
+"\t-f, --file <FILE>\tRead expressions from <FILE> instead of `stdin'\n";
 
+/* fail: print formatted `msg' and exit. */
 void fail(const char *prog, const char *msg)
 {
     fprintf(stderr, "%s: error: %s.\n", prog, msg);
     exit(1);
 }
 
+/* expected: print formatted `msg' and exit. */
 void expected(const char *prog, const char *msg, char c)
 {
     fprintf(stderr, "%s: error: expected %s, got %c.\n", prog, msg, c);
     exit(1);
 }
 
-/* get_valid: get chars from `stdin', it's returned if it's valid. */
+/*
+ * get_valid: get chars from `stdin', the first valid one is returned.
+ * This function is currently unused.
+ */
 char get_valid(char mode, const char *prog)
 {
     char c;
@@ -54,6 +58,7 @@ char get_valid(char mode, const char *prog)
     return EOF; /* never reached */
 }
 
+/* usage: print help string and exit. */
 void usage(const char *prog)
 {
     fprintf(stderr, help_msg, prog);

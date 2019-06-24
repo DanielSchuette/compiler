@@ -111,7 +111,7 @@ begin
         case Look of
             '*': Multiply;
             '/': Divide;
-            else Expected('Mulop');
+            else Expected('Multop');
         end;
     end;
 end;
