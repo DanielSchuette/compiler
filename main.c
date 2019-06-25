@@ -17,21 +17,18 @@ int main(int argc, char **argv)
     progname = argv[0];
 
     for (i = 1; i < argc; i++) {
-        if (!strcmp(argv[i], "--help") ||
-            !strcmp(argv[i], "-h"))
+        if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h"))
             usage(progname);
-        if (!strcmp(argv[i], "--file") ||
-            !strcmp(argv[i], "-f"))
+        if (!strcmp(argv[i], "--file") || !strcmp(argv[i], "-f"))
             fprintf(stderr, "%s: warning: -f is not implemented\n", progname);
-        if (!strcmp(argv[i], "--debug") ||
-            !strcmp(argv[i], "-d"))
+        if (!strcmp(argv[i], "--debug") || !strcmp(argv[i], "-d"))
             debug = 1;
     }
 
     tokens = lex_line(stdin);
     if (debug)
         print_tokens(tokens);
-    expression(&tokens);
+    parse(&tokens);
     free_tokens(tokens);
 
     return 0;

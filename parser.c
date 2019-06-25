@@ -6,6 +6,12 @@
 
 extern char *progname;
 
+/* parse: start parsing a token stream. */
+void parse(tokens **t)
+{
+    expression(t);
+}
+
 /* expression: parse an expression. */
 void expression(tokens **tokens)
 {

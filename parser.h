@@ -9,6 +9,7 @@
  * <term> ::= <factor> [ <mulop> <factor> ]*
  * <factor> ::= <digit>
  */
+void parse(tokens **);
 void expression(tokens **);
 void term(tokens **);
 void factor(tokens **);
