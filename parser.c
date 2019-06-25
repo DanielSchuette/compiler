@@ -29,7 +29,7 @@ void expression(tokens **tokens)
             if (*op == ops_sym[OP_ADD]) ops_fn[OP_ADD](tokens);
             else if (*op == ops_sym[OP_SUB]) ops_fn[OP_SUB](tokens);
         } else if (get_lit(tokens) && len(tokens) > 0)
-            fail(progname, "expected an integer literal");
+            expected_op(progname, "`+' or `-'", *get_lit(tokens));
         else
             break;
     }
@@ -52,7 +52,7 @@ void term(tokens **tokens)
             if (*op == ops_sym[OP_MULT]) ops_fn[OP_MULT](tokens);
             else if (*op == ops_sym[OP_DIV]) ops_fn[OP_DIV](tokens);
         } else if (get_lit(tokens) && len(tokens) > 0)
-            fail(progname, "expected an integer literal");
+            expected_op(progname, "`*' or `/'", *get_lit(tokens));
         else
             break;
     }
@@ -67,7 +67,7 @@ void factor(tokens **tokens)
         fail(progname, "unexpected end of input");
     lit = get_lit(tokens);
     if (!lit)
-        expected(progname, "an integer literal", *get_op(tokens));
+        expected_lit(progname, "an integer literal", *get_op(tokens));
     else
         printf("\tMOVE #%d, D0\n", *lit);
     advance(tokens);

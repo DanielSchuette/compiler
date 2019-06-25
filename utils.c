@@ -28,9 +28,15 @@ void fail(const char *prog, const char *msg)
 }
 
 /* expected: print formatted `msg' and exit. */
-void expected(const char *prog, const char *msg, char c)
+void expected_lit(const char *prog, const char *msg, char c)
 {
     fprintf(stderr, "%s: error: expected %s, got %c.\n", prog, msg, c);
+    exit(1);
+}
+
+void expected_op(const char *prog, const char *msg, int lit)
+{
+    fprintf(stderr, "%s: error: expected %s, got %d.\n", prog, msg, lit);
     exit(1);
 }
 

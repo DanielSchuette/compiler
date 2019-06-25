@@ -1,7 +1,7 @@
 # Compile the compiler.
 PC := fpc
 PFLAGS := -TLINUX
-FLAGS := -d
+FLAGS := # -d -f
 PSRC := main.pas
 PDIR := pascal_src
 OBJS := main.o utils.o ops.o parser.o lexer.o
