@@ -42,12 +42,20 @@ void expected_op(const char *prog, const char *msg, int lit)
 
 void expected_pos(const char *prog, const char *msg, const char *line, int pos)
 {
-    int i;
+    int i, j, col = 0;
 
     fprintf(stderr, "%s: error: invalid character, got %c.\n\t%s\t",
             prog, line[pos], line);
     for (i = 0; i < pos; i++)
-        fputc('-', stderr);
+        if (line[i] == '\t') {
+            for (j = 0; j < 8-col; j++)
+                fputc('-', stderr);
+            col = 0; /* char is aligned */
+        } else {
+            if (col < 7) col++;
+            else col = 0;
+            fputc('-', stderr);
+        }
     fprintf(stderr, "^\n");
     exit(1);
 }
