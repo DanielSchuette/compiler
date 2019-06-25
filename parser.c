@@ -19,7 +19,7 @@ void expression(tokens **tokens)
 
     term(tokens);
     while (TRUE) {
-        if ((*tokens)->len > 0) op = (*(*tokens)->stream)->op;
+        if (len(tokens) > 0) op = get_op(tokens);
         else op = NULL;
         if (op) {
             if (*op != ops_sym[OP_ADD] && *op != ops_sym[OP_SUB])
@@ -28,7 +28,7 @@ void expression(tokens **tokens)
             printf("\tMOVE D0, -(SP)\n"); /* -(SP) pushes onto stack */
             if (*op == ops_sym[OP_ADD]) ops_fn[OP_ADD](tokens);
             else if (*op == ops_sym[OP_SUB]) ops_fn[OP_SUB](tokens);
-        } else if ((*(*tokens)->stream)->lit && (*tokens)->len > 0)
+        } else if (get_lit(tokens) && len(tokens) > 0)
             fail(progname, "expected an integer literal");
         else
             break;
@@ -42,7 +42,7 @@ void term(tokens **tokens)
 
     factor(tokens);
     while (TRUE) {
-        if ((*tokens)->len > 0) op = (*(*tokens)->stream)->op;
+        if (len(tokens) > 0) op = get_op(tokens);
         else op = NULL;
         if (op) {
             if (*op != ops_sym[OP_MULT] && *op != ops_sym[OP_DIV])
@@ -51,7 +51,7 @@ void term(tokens **tokens)
             printf("\tMOVE D0, -(SP)\n"); /* -(SP) pushes onto stack */
             if (*op == ops_sym[OP_MULT]) ops_fn[OP_MULT](tokens);
             else if (*op == ops_sym[OP_DIV]) ops_fn[OP_DIV](tokens);
-        } else if ((*(*tokens)->stream)->lit && (*tokens)->len > 0)
+        } else if (get_lit(tokens) && len(tokens) > 0)
             fail(progname, "expected an integer literal");
         else
             break;
@@ -63,11 +63,11 @@ void factor(tokens **tokens)
 {
     int *lit;
 
-    if ((*tokens)->len < 1)
+    if (len(tokens) < 1)
         fail(progname, "unexpected end of input");
-    lit = (*(*tokens)->stream)->lit;
+    lit = get_lit(tokens);
     if (!lit)
-        expected(progname, "an integer literal", *((*(*tokens)->stream)->op));
+        expected(progname, "an integer literal", *get_op(tokens));
     else
         printf("\tMOVE #%d, D0\n", *lit);
     advance(tokens);

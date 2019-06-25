@@ -20,5 +20,8 @@ tokens *lex_line(FILE *);
 void free_tokens(tokens *);
 void print_tokens(tokens *);
 void advance(tokens **);
+int len(tokens **);
+char *get_op(tokens **);
+int *get_lit(tokens **);
 
 #endif /* _LEXER_H_ */

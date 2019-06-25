@@ -34,6 +34,18 @@ void expected(const char *prog, const char *msg, char c)
     exit(1);
 }
 
+void expected_pos(const char *prog, const char *msg, const char *line, int pos)
+{
+    int i;
+
+    fprintf(stderr, "%s: error: invalid character, got %c.\n\t%s\t",
+            prog, line[pos], line);
+    for (i = 0; i < pos; i++)
+        fputc('-', stderr);
+    fprintf(stderr, "^\n");
+    exit(1);
+}
+
 /*
  * get_valid: get chars from `stdin', the first valid one is returned.
  * This function is currently unused.

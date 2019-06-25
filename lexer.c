@@ -3,6 +3,7 @@
 #include <string.h>
 #include "lexer.h"
 #include "ops.h"
+#include "utils.h"
 
 extern char *progname;
 
@@ -61,7 +62,8 @@ tokens *lex_line(FILE *stream)
             tok->op = NULL;
             tok->lit = lit_i;
             free(lit_c);
-        }
+        } else
+            expected_pos(progname, "valid token", line, i);
         t->stream[t->len++] = tok;
     }
 
@@ -102,4 +104,20 @@ void advance(tokens **t)
     ((*t)->len)--; /* decrement stream length */
     if ((*t)->len > 0)
         (*t)->stream++; /* advance token stream */
+}
+
+/* len: return the length of a token stream. */
+int len(tokens **t)
+{
+    return (*t)->len;
+}
+
+char *get_op(tokens **t)
+{
+    return (*(*t)->stream)->op;
+}
+
+int *get_lit(tokens **t)
+{
+    return (*(*t)->stream)->lit;
 }
