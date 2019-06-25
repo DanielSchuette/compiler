@@ -16,3 +16,35 @@ make test # test the compilation success
 ./compiler # requires a successful `make', use `--help' for additional information
 # Type an expression and observe the output
 ```
+
+## Examples
+A successful compilation yields:
+
+```bash
+./compiler
+1+9/2*12-1
+#        MOVE #1, D0
+#        MOVE D0, -(SP)
+#        MOVE #9, D0
+#        MOVE D0, -(SP)
+#        MOVE #2, D0
+#        MOVE (SP)+, D1
+#        DIVS D1, D0
+#        MOVE D0, -(SP)
+#        MOVE #12, D0
+#        MULS (SP)+, D0
+#        ADD (SP)+, D0
+#        MOVE D0, -(SP)
+#        MOVE #1, D0
+#        SUB (SP)+, D0
+#        NEG D0
+```
+
+If the expression contains errors, a helpful error message is displayed:
+```bash
+./compiler
+1+              u
+#./compiler: error: invalid character, got u.
+#        1+              u
+#        ----------------^
+```
