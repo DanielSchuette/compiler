@@ -85,7 +85,7 @@ void factor(tokens **tokens, pnode_t *node)
     advance(tokens);
 }
 
-/* free_nodes: free a parse tree bottom-up._*/
+/* free_nodes: free a parse tree bottom-up. */
 void free_nodes(pnode_t *n)
 {
     free(n);

@@ -11,14 +11,13 @@ extern char *progname;
 tokens *lex_line(FILE *stream)
 {
     int i;
-    char op;
-    char *line;
+    char op, *line;
     tokens *t;
     size_t n;
 
+#if _POSIX_C_SOURCE >= 200809L
     line = NULL;
     n = 0;
-#if _POSIX_C_SOURCE >= 200809L
     getline(&line, &n, stream); /* `*line' must be freed */
 #else
     fprintf(stderr, "%s: error: need glibc >= 200809\n", progname);
@@ -49,15 +48,12 @@ tokens *lex_line(FILE *stream)
             tok->lit = NULL;
         } else if (isdigit(line[i])) {
             char *lit_c;
-            int *lit_i;
-            int k = 0;
-            int len = strlen(&line[i])+1;
+            int *lit_i, k = 0, len = strlen(&line[i])+1;
 
             lit_i = (int *)malloc(sizeof(int));
             lit_c = (char *)malloc(len*sizeof(char));
             while (isdigit(line[i]))
                 lit_c[k++] = line[i++];
-
             i--;
             lit_c[k] = '\0';
             *lit_i = atoi(lit_c);
@@ -66,6 +62,8 @@ tokens *lex_line(FILE *stream)
             free(lit_c);
         } else
             expected_pos(progname, "valid token", line, i);
+
+        /* append token to stream */
         t->stream[t->len++] = tok;
     }
 
@@ -114,11 +112,13 @@ int len(tokens **t)
     return (*t)->len;
 }
 
+/* get_op: return the op ptr of the current token. */
 char *get_op(tokens **t)
 {
     return (*(*t)->stream)->op;
 }
 
+/* get_lit: return the literal ptr of the current token. */
 int *get_lit(tokens **t)
 {
     return (*(*t)->stream)->lit;
