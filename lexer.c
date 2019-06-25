@@ -25,6 +25,8 @@ tokens *lex_line(FILE *stream)
     exit(1);
 #endif
     n = strlen(line);
+    if (n >= MAX_TOKEN)
+        fail(progname, "input line too long (limit of 1024)");
 
     t = (tokens *)malloc(sizeof(tokens));
     t->stream = (token_t **)malloc(MAX_TOKEN*sizeof(token_t *));

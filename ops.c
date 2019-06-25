@@ -1,8 +1,6 @@
 /* ops.c: operations recognized by the parser. */
 #include <stdio.h>
-#include "lexer.h"
 #include "ops.h"
-#include "parser.h"
 
 char ops_sym[NUM_OPS] = {
     '+', '-',       /* valid in expressions */
@@ -14,32 +12,32 @@ op_fn ops_fn[NUM_OPS] = {
     _mult, _div,    /* valid in terms */
 };
 
-void _mult(tokens **t)
+void _mult(tokens **t, pnode_t *n)
 {
     advance(t);
-    factor(t);
+    factor(t, n);
     printf("\tMULS (SP)+, D0\n");
 }
 
-void _div(tokens **t)
+void _div(tokens **t, pnode_t *n)
 {
     advance(t);
-    factor(t);
+    factor(t, n);
     printf("\tMOVE (SP)+, D1\n");
     printf("\tDIVS D1, D0\n");
 }
 
-void _add(tokens **t)
+void _add(tokens **t, pnode_t *n)
 {
     advance(t);
-    term(t);
+    term(t, n);
     printf("\tADD (SP)+, D0\n"); /* (SP)+ pops from stack */
 }
 
-void _sub(tokens **t)
+void _sub(tokens **t, pnode_t *n)
 {
     advance(t);
-    term(t);
+    term(t, n);
     printf("\tSUB (SP)+, D0\n");
     printf("\tNEG D0\n");
 }

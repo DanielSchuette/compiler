@@ -6,18 +6,30 @@
 
 extern char *progname;
 
+/*
+ * TODO:
+ *      - add expressions, terms, and factors to the parse tree.
+ *      - visualize the parse tree (dot?)
+ *      - clean up resources afterwards
+ */
+
+
 /* parse: start parsing a token stream. */
-void parse(tokens **t)
+pnode_t *parse(tokens **t)
 {
-    expression(t);
+    pnode_t *n;
+
+    n = (pnode_t *)malloc(sizeof(pnode_t));
+    expression(t, n);
+    return n;
 }
 
 /* expression: parse an expression. */
-void expression(tokens **tokens)
+void expression(tokens **tokens, pnode_t *node)
 {
     char *op;
 
-    term(tokens);
+    term(tokens, node);
     while (TRUE) {
         if (len(tokens) > 0) op = get_op(tokens);
         else op = NULL;
@@ -26,8 +38,8 @@ void expression(tokens **tokens)
                 break;
 
             printf("\tMOVE D0, -(SP)\n"); /* -(SP) pushes onto stack */
-            if (*op == ops_sym[OP_ADD]) ops_fn[OP_ADD](tokens);
-            else if (*op == ops_sym[OP_SUB]) ops_fn[OP_SUB](tokens);
+            if (*op == ops_sym[OP_ADD]) ops_fn[OP_ADD](tokens, node);
+            else if (*op == ops_sym[OP_SUB]) ops_fn[OP_SUB](tokens, node);
         } else if (get_lit(tokens) && len(tokens) > 0)
             expected_op(progname, "`+' or `-'", *get_lit(tokens));
         else
@@ -36,11 +48,11 @@ void expression(tokens **tokens)
 }
 
 /* term: parse a term. */
-void term(tokens **tokens)
+void term(tokens **tokens, pnode_t *node)
 {
     char *op;
 
-    factor(tokens);
+    factor(tokens, node);
     while (TRUE) {
         if (len(tokens) > 0) op = get_op(tokens);
         else op = NULL;
@@ -49,8 +61,8 @@ void term(tokens **tokens)
                 break;
 
             printf("\tMOVE D0, -(SP)\n"); /* -(SP) pushes onto stack */
-            if (*op == ops_sym[OP_MULT]) ops_fn[OP_MULT](tokens);
-            else if (*op == ops_sym[OP_DIV]) ops_fn[OP_DIV](tokens);
+            if (*op == ops_sym[OP_MULT]) ops_fn[OP_MULT](tokens, node);
+            else if (*op == ops_sym[OP_DIV]) ops_fn[OP_DIV](tokens, node);
         } else if (get_lit(tokens) && len(tokens) > 0)
             expected_op(progname, "`*' or `/'", *get_lit(tokens));
         else
@@ -59,7 +71,7 @@ void term(tokens **tokens)
 }
 
 /* factor: parse a factor. */
-void factor(tokens **tokens)
+void factor(tokens **tokens, pnode_t *node)
 {
     int *lit;
 
@@ -71,4 +83,10 @@ void factor(tokens **tokens)
     else
         printf("\tMOVE #%d, D0\n", *lit);
     advance(tokens);
+}
+
+/* free_nodes: free a parse tree bottom-up._*/
+void free_nodes(pnode_t *n)
+{
+    free(n);
 }

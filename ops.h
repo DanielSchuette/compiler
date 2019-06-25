@@ -2,6 +2,7 @@
 #define _OPS_H_
 
 #include "lexer.h"
+#include "parser.h"
 
 /* indices into ops arrays */
 #define OP_ADD  0
@@ -10,12 +11,12 @@
 #define OP_DIV  3
 #define NUM_OPS 4
 
-typedef void (*op_fn)(tokens **);
+typedef void (*op_fn)(tokens **, pnode_t *);
 
-void _add(tokens **);
-void _sub(tokens **);
-void _mult(tokens **);
-void _div(tokens **);
+void _add(tokens **, pnode_t *);
+void _sub(tokens **, pnode_t *);
+void _mult(tokens **, pnode_t *);
+void _div(tokens **, pnode_t *);
 
 /* operation symbols and associated actions */
 op_fn ops_fn[NUM_OPS];
