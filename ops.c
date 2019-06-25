@@ -1,5 +1,6 @@
 /* ops.c: operations recognized by the parser. */
 #include <stdio.h>
+#include "lexer.h"
 #include "ops.h"
 #include "parser.h"
 
@@ -15,12 +16,14 @@ op_fn ops_fn[NUM_OPS] = {
 
 void _mult(tokens **t)
 {
+    advance(t);
     factor(t);
     printf("\tMULS (SP)+, D0\n");
 }
 
 void _div(tokens **t)
 {
+    advance(t);
     factor(t);
     printf("\tMOVE (SP)+, D1\n");
     printf("\tDIVS D1, D0\n");
@@ -28,12 +31,14 @@ void _div(tokens **t)
 
 void _add(tokens **t)
 {
+    advance(t);
     term(t);
     printf("\tADD (SP)+, D0\n"); /* (SP)+ pops from stack */
 }
 
 void _sub(tokens **t)
 {
+    advance(t);
     term(t);
     printf("\tSUB (SP)+, D0\n");
     printf("\tNEG D0\n");

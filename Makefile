@@ -1,6 +1,7 @@
 # Compile the compiler.
 PC := fpc
 PFLAGS := -TLINUX
+FLAGS := -d
 PSRC := main.pas
 PDIR := pascal_src
 OBJS := main.o utils.o ops.o parser.o lexer.o
@@ -19,7 +20,7 @@ pascal: $(PDIR)/$(PSRC)
 	$(CC) -o $@ -c $<
 
 test:
-	./$(BIN)
+	./$(BIN) $(FLAGS)
 
 clean:
 	rm -f *.o $(PDIR)/*.o $(BIN)

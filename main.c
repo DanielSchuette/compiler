@@ -12,7 +12,6 @@ int main(int argc, char **argv)
     int i;
     int debug;
     tokens *tokens;
-    char *progname;
 
     debug = 0;
     progname = argv[0];

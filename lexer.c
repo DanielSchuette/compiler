@@ -79,7 +79,6 @@ void free_tokens(tokens *t)
         free(t->stream[i]->lit);
         free(t->stream[i]);
     }
-    free(t->stream);
     free(t);
 }
 
@@ -97,3 +96,10 @@ void print_tokens(tokens *t)
     }
 }
 
+/* advance: advance a token stream by one if there are still tokens on it. */
+void advance(tokens **t)
+{
+    ((*t)->len)--; /* decrement stream length */
+    if ((*t)->len > 0)
+        (*t)->stream++; /* advance token stream */
+}

@@ -19,5 +19,6 @@ typedef struct tokens {
 tokens *lex_line(FILE *);
 void free_tokens(tokens *);
 void print_tokens(tokens *);
+void advance(tokens **);
 
 #endif /* _LEXER_H_ */
