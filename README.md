@@ -48,3 +48,5 @@ If the expression contains errors, a helpful error message is displayed:
 #        1+              u
 #        ----------------^
 ```
+## License
+The code in this repository is licensed under the [GPLv3 license](./LICENSE.md).
