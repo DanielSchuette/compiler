@@ -38,6 +38,7 @@ void expression(tokens **tokens, pnode_t *node)
                 break;
 
             printf("\tMOVE D0, -(SP)\n"); /* -(SP) pushes onto stack */
+
             if (*op == ops_sym[OP_ADD]) ops_fn[OP_ADD](tokens, node);
             else if (*op == ops_sym[OP_SUB]) ops_fn[OP_SUB](tokens, node);
         } else if (get_lit(tokens) && len(tokens) > 0)
