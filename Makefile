@@ -19,8 +19,16 @@ pascal: $(PDIR)/$(PSRC)
 %.o: %.c
 	$(CC) -o $@ -c $<
 
-test:
+test_interactive:
 	./$(BIN) $(FLAGS)
 
+test_assembly:
+	@rm -f add.* add
+	@echo '1+2-7+9' | ./$(BIN) > add.s
+	as add.s -o add.o
+	ld add.o -o add
+	@./add || echo "returned $$?"
+
 clean:
-	rm -f *.o $(PDIR)/*.o $(BIN)
+	rm -f *.o $(PDIR)/*.o $(BIN) $(PDIR)/main
+	rm -f add.* add

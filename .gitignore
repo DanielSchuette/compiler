@@ -2,3 +2,4 @@ m68k_emulator/
 pascal_src
 *.o
 compiler
+add*
